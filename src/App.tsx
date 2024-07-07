@@ -7,6 +7,7 @@ import { NoteEditor } from "./NoteEditor";
 
 function App() {
   const [notes, setNotes] = useState<Note[]>([]);
+  const [previewMode, setPreviewMode] = useState(false);
 
   useEffect(() => {
     fetchNotes();
@@ -53,11 +54,14 @@ function App() {
       <div className="flex-1 p-4">
         <div className="mb-4 flex justify-between">
           <h2 className="text-lg font-bold">Note Editor</h2>
-          <button className="p-2 bg-green-500 text-white font-bold rounded">
-            Preview
+          <button
+            className="p-2 bg-green-500 text-white font-bold rounded"
+            onClick={() => setPreviewMode(!previewMode)}
+          >
+            {previewMode ? "Edit" : "Preview"}
           </button>
         </div>
-        <NoteEditor content={notes[0]?.content} />
+        <NoteEditor content={notes[0]?.content} isPreviewMode={previewMode} />
       </div>
     </div>
   );
