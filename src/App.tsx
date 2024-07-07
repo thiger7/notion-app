@@ -3,6 +3,7 @@ import './App.css'
 import { NoteList } from './NoteList'
 import { supabase } from './supabase/client';
 import { Note } from './Note';
+import { NoteEditor } from './NoteEditor';
 
 function App() {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -37,6 +38,7 @@ function App() {
               Preview
             </button>
           </div>
+          <NoteEditor content={notes[0]?.content} />
         </div>
     </div>
   )
