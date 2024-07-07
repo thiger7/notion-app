@@ -65,6 +65,17 @@ function App() {
     fetchNotes();
   };
 
+  const handleChangeTitle = async (title: string) => {
+    const { error } = await supabase
+      .from("note")
+      .update({ title })
+      .eq("id", currentNoteId);
+
+    if (error) {
+      console.error("Error updating note", error);
+    }
+  };
+
   return (
     <div className="flex h-screen">
       <div className="w-[300px] bg-gray-100 p-4">
@@ -80,6 +91,7 @@ function App() {
           notes={notes}
           selectNoteId={currentNoteId}
           onSelect={note => setCurrentNoteId(note.id)}
+          handleChangeTitle={handleChangeTitle}
         />
       </div>
       <div className="flex-1 p-4">
