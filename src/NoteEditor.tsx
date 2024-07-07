@@ -1,5 +1,6 @@
 import { FC } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 type Props = {
   content: string;
@@ -7,10 +8,14 @@ type Props = {
   onContentChange: (content: string) => void;
 };
 
-export const NoteEditor: FC<Props> = ({ content, isPreviewMode, onContentChange }) => {
+export const NoteEditor: FC<Props> = ({
+  content,
+  isPreviewMode,
+  onContentChange,
+}) => {
   return isPreviewMode ? (
     <div className="markdown">
-      <ReactMarkdown>{content}</ReactMarkdown>
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
     </div>
   ) : (
     <textarea
