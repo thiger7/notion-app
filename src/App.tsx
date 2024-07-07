@@ -1,6 +1,24 @@
+import { useEffect, useState } from 'react'
 import './App.css'
+import { NoteList } from './NoteList'
+import { supabase } from './supabase/client';
+import { Note } from './Note';
 
 function App() {
+  const [notes, setNotes] = useState<Note[]>([]);
+
+  useEffect(() => {
+    fetchNotes();
+  }, [])
+
+  const fetchNotes = async () => {
+    const { data, error } = await supabase.from("note").select("*").order("id", { ascending: false })
+    if (error) {
+      console.error("Error fetching notes", error);
+    } else {
+      setNotes(data);
+    }
+  }
 
   return (
     <div className='flex h-screen'>
@@ -10,6 +28,7 @@ function App() {
             新規作成
           </button>
         </div>
+        <NoteList notes={notes} />
       </div>
       <div className='flex-1 p-4'>
           <div className='mb-4 flex justify-between'>
