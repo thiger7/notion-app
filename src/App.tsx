@@ -8,6 +8,7 @@ import { NoteEditor } from "./NoteEditor";
 function App() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [previewMode, setPreviewMode] = useState(false);
+  const [currentNoteId, setCurrentNoteId] = useState<number | null>(null);
 
   useEffect(() => {
     fetchNotes();
@@ -23,7 +24,7 @@ function App() {
 
     return () => {
       supabase.removeChannel(subscription);
-    }
+    };
   }, []);
 
   const fetchNotes = async () => {
@@ -75,7 +76,11 @@ function App() {
             新規作成
           </button>
         </div>
-        <NoteList notes={notes} />
+        <NoteList
+          notes={notes}
+          selectNoteId={currentNoteId}
+          onSelect={note => setCurrentNoteId(note.id)}
+        />
       </div>
       <div className="flex-1 p-4">
         <div className="mb-4 flex justify-between">
@@ -88,7 +93,7 @@ function App() {
           </button>
         </div>
         <NoteEditor
-          content={notes[0]?.content}
+          content={notes.find(note => note.id === currentNoteId)?.content || ""}
           isPreviewMode={previewMode}
           onContentChange={handleContentChange}
         />
