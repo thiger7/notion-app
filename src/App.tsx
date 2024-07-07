@@ -38,6 +38,19 @@ function App() {
     fetchNotes();
   };
 
+  const handleContentChange = async (content: string) => {
+    const { error } = await supabase
+      .from("note")
+      .update({ content })
+      .eq("id", notes[0].id);
+
+    if (error) {
+      console.error("Error updating note", error);
+    }
+
+    fetchNotes();
+  };
+
   return (
     <div className="flex h-screen">
       <div className="w-[300px] bg-gray-100 p-4">
@@ -61,7 +74,11 @@ function App() {
             {previewMode ? "Edit" : "Preview"}
           </button>
         </div>
-        <NoteEditor content={notes[0]?.content} isPreviewMode={previewMode} />
+        <NoteEditor
+          content={notes[0]?.content}
+          isPreviewMode={previewMode}
+          onContentChange={handleContentChange}
+        />
       </div>
     </div>
   );
