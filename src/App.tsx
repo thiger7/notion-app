@@ -11,6 +11,19 @@ function App() {
 
   useEffect(() => {
     fetchNotes();
+
+    const subscription = supabase
+      .channel("note")
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "note" },
+        fetchNotes,
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(subscription);
+    }
   }, []);
 
   const fetchNotes = async () => {
